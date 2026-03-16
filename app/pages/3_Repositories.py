@@ -4,22 +4,24 @@ from app.utils import load_data
 
 st.set_page_config(page_title="Repository Explorer", page_icon="📂", layout="wide")
 
-st.title("📂 Repository Explorer")
-st.markdown("Search and discover impactful projects from the Peruvian ecosystem.")
+st.title("📂 Explorador de Proyectos")
+st.markdown("Busca y descubre los proyectos más impactantes del ecosistema peruano.")
 
-# --- Sidebar Filters ---
-st.sidebar.subheader("Filters")
-search_query = st.sidebar.text_input("🔍 Search by name or description", "")
+# --- SIDEBAR FILTERS ---
+st.sidebar.header("🔍 Filtros de Búsqueda")
+search_query = st.sidebar.text_input("Palabra clave (nombre o desc.)", "")
 
+# Languages multi-select with search
 langs_df = load_data("SELECT DISTINCT language FROM repos WHERE language IS NOT NULL AND language != ''")
-selected_langs = st.sidebar.multiselect("Select Languages", langs_df['language'].tolist())
+selected_langs = st.sidebar.multiselect("Lenguajes", sorted(langs_df['language'].tolist()))
 
+# Industries
 industries_df = load_data("SELECT DISTINCT industry_name FROM repos WHERE industry_name IS NOT NULL AND industry_name != ''")
-selected_industries = st.sidebar.multiselect("Select Industries", industries_df['industry_name'].tolist())
+selected_industries = st.sidebar.multiselect("Sectores (Clasificados por AI)", sorted(industries_df['industry_name'].tolist()))
 
-min_stars = st.sidebar.slider("Minimum Stars", 0, 1000, 0)
+min_stars = st.sidebar.select_slider("Mínimo de Estrellas ⭐", options=[0, 10, 50, 100, 500, 1000], value=0)
 
-# --- Data Querying ---
+# --- DATA QUERYING ---
 query = "SELECT name, full_name, language, stargazers_count, forks_count, industry_name, description, html_url FROM repos WHERE stargazers_count >= ?"
 params = [min_stars]
 
@@ -39,28 +41,45 @@ if selected_industries:
 
 df = load_data(query, params=params)
 
+# --- DISPLAY ---
 if df.empty:
-    st.info("No repositories found matching those criteria.")
+    st.warning("No se encontraron proyectos con esos criterios. Prueba quitando filtros.")
 else:
-    st.subheader(f"Found {len(df)} repositories")
-    df_display = df.sort_values(by='stargazers_count', ascending=False)
+    df = df.sort_values(by='stargazers_count', ascending=False)
     
+    st.subheader(f"Encontrados: {len(df)} repositorios")
+    
+    # --- HIGHLIGHT CARDS (Top 3) ---
+    if not search_query and not selected_langs and len(df) >= 3:
+        st.write("### 🏆 Proyectos Destacados")
+        top_cols = st.columns(3)
+        for i in range(3):
+            repo = df.iloc[i]
+            with top_cols[i]:
+                st.markdown(f"""
+                <div style="background-color: #161b22; padding: 20px; border-radius: 10px; border: 1px solid #ff4b4b; height: 200px">
+                    <h4 style="margin-top: 0;"><a href="{repo['html_url']}" target="_blank" style="text-decoration: none; color: #ff4b4b;">{repo['name']}</a></h4>
+                    <p style="font-size: 0.8em; color: #8b949e;">{repo['description'][:100] if repo['description'] else 'Sin descripción'}...</p>
+                    <div style="margin-top: 10px;">
+                        <span style="background-color: #21262d; padding: 4px 8px; border-radius: 12px; font-size: 0.7em;">⭐ {repo['stargazers_count']}</span>
+                        <span style="background-color: #21262d; padding: 4px 8px; border-radius: 12px; font-size: 0.7em;">🍴 {repo['forks_count']}</span>
+                        <span style="background-color: #21262d; padding: 4px 8px; border-radius: 12px; font-size: 0.7em;">💻 {repo['language']}</span>
+                    </div>
+                </div>
+                """, unsafe_allow_html=True)
+        st.divider()
+
+    # --- FULL DATA TABLE ---
     st.dataframe(
-        df_display[['full_name', 'language', 'stargazers_count', 'forks_count', 'industry_name', 'description']],
+        df,
         column_config={
-            "full_name": st.column_config.TextColumn("Repository"),
-            "stargazers_count": st.column_config.NumberColumn("⭐ Stars"),
-            "forks_count": st.column_config.NumberColumn("🍴 Forks"),
-            "industry_name": st.column_config.TextColumn("Industry (AI Classified)"),
+            "html_url": st.column_config.LinkColumn("GitHub Link"),
+            "full_name": "Repositorio",
+            "stargazers_count": "⭐",
+            "forks_count": "🍴",
+            "industry_name": "Sector Económico",
+            "description": "Descripción"
         },
         use_container_width=True,
         hide_index=True
     )
-    
-    c1, c2 = st.columns(2)
-    with c1:
-        top_lang = df['language'].value_counts().idxmax() if not df['language'].empty else "N/A"
-        st.metric("Primary Language in Selection", top_lang)
-    with c2:
-        avg_stars = round(df['stargazers_count'].mean(), 1)
-        st.metric("Average Stars", avg_stars)
