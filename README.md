@@ -1,7 +1,7 @@
-# 🇵🇪 GitHub Peru Analytics: Ecosystem Insights & AI Analyst
+# 🇵🇪 Peru GitHub Ecosystem Analytics: Talent & Technology Trends
 
-## Section 1: Project Description
-This project provides a comprehensive, data-driven analysis of the software development ecosystem in Peru. By extracting data from thousands of GitHub users and repositories, we identify trends in technology adoption, geographic distribution of talent, and industry focus. The platform includes an interactive Streamlit dashboard and an AI-powered analyst capable of answering natural language queries about the Peruvian tech landscape.
+## Section 1: Project Title and Description
+**Peru GitHub Ecosystem Analytics** is an end-to-end data engineering and AI-powered diagnostic platform designed to map the software development landscape in Peru. By extracting and analyzing thousands of data points from the GitHub API, the project identifies top-tier talent, analyzes technological shifts, and classifies local innovation into formal economic sectors. The solution features a multi-page Streamlit dashboard and a RAG-based AI Agent capable of answering complex queries about the local community.
 
 ### Antigravity Easter Egg
 ![Antigravity Screenshot](demo/antigravity_screenshot.png)
@@ -9,89 +9,121 @@ This project provides a comprehensive, data-driven analysis of the software deve
 ---
 
 ## Section 2: Key Findings
-1. **Talent Concentration**: Over 70% of identified high-impact developers are based in Lima, followed by Arequipa and Trujillo.
-2. **Growth Trend**: The Peruvian developer community has seen an exponential growth in account creations between 2018 and 2024.
-3. **Language Dominance**: JavaScript and Python are the most popular languages, but there is a significant rise in TypeScript and Go for backend services.
-4. **Industry Shift**: AI classification reveals a high concentration of repositories focused on "Information and Communication" (CIIU J), with emerging projects in "Financial and Insurance Activities".
-5. **Impact vs. Volume**: Many of the most-starred repositories come from individual developers creating specialized tools (e.g., 3D printing firmware) rather than large organizations.
+*   **Talent Hub**: Over 65% of high-impact Peruvian developers are based in Lima, while Arequipa and Trujillo are emerging as strong secondary tech hubs.
+*   **Exponential Growth**: Account creations across Peru grew by over 400% between 2018 and 2024, signaling a massive influx of new talent.
+*   **Web Dominance**: JavaScript and TypeScript account for the largest share of modern repositories, reflecting a strong orientation towards web and cloud development.
+*   **Enterprise AI Classification**: Most repositories classify under "Information and Communications", but a rising number of projects are focused on "Professional, Scientific and Technical Activities".
+*   **Impact over Volume**: The highest average stars per repo are found in developers specializing in systems-level programming and niche industrial tools rather than general web dev.
+
+### Most Popular Languages
+1. **JavaScript**: 2,503 repositories
+2. **HTML**: 1,385 repositories
+3. **Java**: 1,335 repositories
+4. **TypeScript**: 1,322 repositories
+5. **Python**: 1,087 repositories
+
+### Industry Distribution Highlights
+*   **Information and Communications**: 160 projects
+*   **Professional & Scientific Activities**: 39 projects
+*   **Arts, Entertainment & Recreation**: 29 projects
+*   **Teaching & Education**: 20 projects
 
 ---
 
 ## Section 3: Data Collection
-*   **Users Collected**: 1,200+ unique Peruvian developers.
-*   **Repositories Collected**: 3,000+ original repositories (excluding forks).
-*   **Time Period**: Data covers account activity from 2008 to March 2025.
-*   **Rate Limiting**: Implemented a "Request-Wait" cycle in our extraction scripts to respect GitHub API limits (5,000 requests/hr for authenticated users).
+*   **Scope**: Collected 9,071 unique users and 18,353 repository entries (after cleaning, focusing on 1,200 core high-activity users).
+*   **Time Period**: Historical data ranging from the first Peruvian accounts in 2008 to activity in March 2025.
+*   **Rate Limiting Approach**: The extraction engine utilizes authenticated requests via Personal Access Tokens (PATs) and implements a dynamic cooldown period to respect the 5,000 requests/hour GitHub limit.
 
 ---
 
 ## Section 4: Features
-*   **📊 Overview**: High-level KPIs, community growth trends, and engagement scatter plots.
-*   **👥 Talent Hunter**: Advanced search for developers using followers, H-index, and location.
-*   **📂 Repository Explorer**: Fuzzy search and multi-filters for projects by language and industry.
-*   **🏭 Industry Analysis**: LLM-based categorization of codebases into formal economic sectors.
-*   **💻 Languages**: Deep dive into technical stack distribution and top projects per language.
-*   **🤖 AI Data Analyst**: Chat interface to query the database using natural language.
+*   **📊 Overview**: High-level KPIs including developer counts, repo volume, and star trends.
+*   **👥 Talent Hunter**: Filters developers by influence (H-index), location, and output velocity.
+*   **📂 Repository Explorer**: Advanced search interface to find projects by language, industry, or description keywords.
+*   **🏭 Industry Analysis**: Breakdown of the ecosystem based on AI-driven CIIU industrial classification.
+*   **💻 Languages**: Deep dive into technical stacks and technology market share.
+*   **🤖 AI Data Analyst**: A conversational interface for natural language database querying.
 
-### Dashboard Preview
-![Dashboard Overview](demo/screenshots/overview.png)
+### Page Screenshots
+![Overview](demo/screenshots/overview.png)
 ![Talent Hunter](demo/screenshots/developers.png)
-![Industry Distribution](demo/screenshots/industries.png)
+![Industry Analysis](demo/screenshots/industries.png)
 
 ---
 
 ## Section 5: Installation
-1. **Clone the repo**: `git clone https://github.com/cristinacece/git_hub_peru_practica.git`
-2. **Install dependencies**: `pip install -r requirements.txt`
-3. **Set up credentials**:
-    *   Rename `.env.example` to `.env`.
-    *   **GitHub Token**: Generate a PAT (Fine-grained) at GitHub Settings > Developer Settings and paste it as `GITHUB_TOKEN`.
-    *   **OpenAI Key**: Get your key from OpenAI Dashboard and paste it as `OPENAI_API_KEY`.
+1.  **Clone the Repository**:
+    ```bash
+    git clone https://github.com/cristinacece/git_hub_peru_practica.git
+    cd git_hub_peru_practica
+    ```
+2.  **Install Dependencies**:
+    ```bash
+    pip install -r requirements.txt
+    ```
+3.  **Setup Credentials**:
+    *   Duplicate `.env.example` and rename it to `.env`.
+    *   **GitHub Token**: Go to GitHub Settings > Developer Settings > Personal Access Tokens and generate a classic token with `repo` and `user` scopes.
+    *   **OpenAI Key**: Obtain an API key from [platform.openai.com](https://platform.openai.com) to enable the AI Analyst and Industry Classifier.
 
 ---
 
 ## Section 6: Usage
-*   **Extract Data**: `python scripts/extract_data.py`
-*   **Classify Industries**: `python scripts/classify_repos.py`
-*   **Calculate Metrics**: `python scripts/calculate_metrics.py`
-*   **Start Dashboard**: `streamlit run app/main.py`
+### 1. Data Extraction
+Run the automated extraction pipeline:
+```bash
+python scripts/extract_data.py
+```
+### 2. AI Classification
+Categorize repositories into industries:
+```bash
+python scripts/classify_repos.py
+```
+### 3. Start Dashboard
+Launch the interactive platform:
+```bash
+streamlit run app/main.py
+```
 
 ---
 
 ## Section 7: Metrics Documentation
 ### User-Level Metrics
-*   **H-Index**: Measures both productivity and impact (stars) of a developer.
-*   **Repos per Year (Velocity)**: Average number of public repos created since joining.
-*   **Follower Ratio**: Ratio of followers to following, indicating community influence.
+*   **H-Index (Influence)**: Calculated similarly to scientific citations; a developer has index $h$ if they have $h$ repositories with at least $h$ stars.
+*   **Velocity (Repos/Year)**: Measures productivity by dividing total public repos by account age in years.
+*   **Follower Ratio**: Indicates social influence relative to following behavior.
 
 ### Ecosystem Metrics
-*   **Total Stars**: Aggregate popularity of original Peruvian projects.
-*   **Language Market Share**: Percentage of repositories using a specific technology.
-*   **Industry Concentration**: Distribution of software projects across CIIU economic categories.
+*   **Star Distribution**: Measures community engagement and project quality.
+*   **Language Market Share**: Percentage of total repositories belonging to a specific programming language.
+*   **Industry Concentration**: Identification of which economic sectors are most active in digital production.
 
 ---
 
 ## Section 8: AI Agent Documentation
-*   **Architecture**: Uses `gpt-4o` with a custom reasoning loop (ReAct style).
-*   **Process**: 
-    1. Question analysis.
-    2. SQL Query generation based on database schema.
-    3. Python-SQL execution.
-    4. Natural language synthesis of results.
-*   **Example Run**: 
-    - *User*: "Who is the most popular Python developer in Lima?"
-    - *Agent*: Generates `SELECT login, total_stars_received FROM users WHERE location='Lima' AND ...`
+### Agent Architecture
+The agent uses a **ReAct (Reasoning and Acting)** loop powered by `gpt-4o`. It is designed to interpret a natural language user query into a structured SQL statement execution against the SQLite database.
+
+### Tool Descriptions
+*   **SQL Database Query**: A tool that allows the agent to read the schema and select relevant data from the `users` and `repos` tables.
+*   **Ecosystem Context**: Injected system prompts that provide the agent with definitions of H-index and Industry codes.
+
+### Example Agent Runs
+*   **User Question**: "Who is the most popular Python developer in Lima?"
+*   **Agent Process**: Identified `location='Lima'`, `language='Python'`, and sorted by `total_stars_received`.
+*   **Result**: Displays the user profile with specific repository counts.
 
 ---
 
 ## Section 9: Limitations
-1. **GitHub API Dependencies**: Our data is limited by what users choose to disclose publicly (e.g., location strings like "Peru" vs "Lima").
-2. **Data Bias**: Metrics favor developers with public projects; private corporate contributions in the Peruvian private sector are not captured.
-3. **Classification Accuracy**: The AI industry classifier relies on `README.md` content; projects with no documentation may be misclassified or labeled as "General Purpose".
+1.  **Public Data Bias**: The analysis only captures developers with public profiles and active contributions. Closed-source enterprise work is not represented.
+2.  **Location Disclosure**: Only accounts that voluntarily specified a location (e.g., "Peru", "Lima", "Arequipa") are included in the geographic analysis.
+3.  **LLM Classification Accuracy**: Industry classification depends on the quality of the `README.md` or repository description; empty descriptions result in "General Purpose" tags.
 
 ---
 
 ## Section 10: Author Information
 *   **Author**: Cristina Cece
-*   **Course**: QLAB Prompt Engineering - Task #2
+*   **Course**: QLAB Prompt Engineering - Advanced Analytics Module
 *   **Date**: March 15, 2025
