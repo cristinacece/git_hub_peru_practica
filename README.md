@@ -80,7 +80,12 @@ Categorize repositories into industries:
 ```bash
 python scripts/classify_repos.py
 ```
-### 3. Start Dashboard
+### 3. Calculate Metrics
+Generate statistics and community rankings:
+```bash
+python scripts/calculate_metrics.py
+```
+### 4. Start Dashboard
 Launch the interactive platform:
 ```bash
 streamlit run app/main.py
