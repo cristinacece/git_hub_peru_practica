@@ -1,0 +1,19 @@
+.env
+__pycache__/
+*.pyc
+*.db-journal
+.DS_Store
+.ipynb_checkpoints/
+plots/
+
+# Large data files (too big for GitHub, >50MB)
+data/processed/repositories.csv
+data/processed/users.csv
+data/processed/classifications.csv
+data/metrics/user_metrics.csv
+data/raw/sample_repos_full.csv
+data/repos_1200_users.csv
+
+# Large JSON files
+data/**/*.json
+data/*.json
